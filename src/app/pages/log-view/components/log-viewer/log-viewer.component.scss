@@ -1,0 +1,37 @@
+ion-list {
+  padding-top: 0;
+  padding-bottom: 0;
+
+  ion-item {
+    --min-height: 1.2rem;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: smaller;
+
+    ion-icon {
+      vertical-align: middle;
+      margin-right: .5rem;
+      margin-top: .3rem;
+			margin-bottom: .3rem;
+			font-size: 16px;
+    }
+
+    .log-title {
+      margin-left: .2rem;
+    }
+
+    .log-message {
+      margin-left: .5rem;
+    }
+  }
+
+  .messageFilter {
+    width: 40px;
+
+    ion-icon {
+      vertical-align: middle;
+      margin: 0;
+			font-size: 16px;
+    }
+  }
+}

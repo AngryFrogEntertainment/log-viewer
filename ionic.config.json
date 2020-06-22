@@ -1,0 +1,7 @@
+{
+  "name": "log-viewer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

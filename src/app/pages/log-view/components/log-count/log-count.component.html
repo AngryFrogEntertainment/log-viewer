@@ -1,0 +1,6 @@
+<ion-item button detail (click)="filterService.applyLevelFilter(logLevelCount.level)"
+	*ngFor="let logLevelCount of logLevelCount">
+	<ion-icon [color]="getLevelColor(logLevelCount.level)" [name]="getLevelIcon(logLevelCount.level)" slot="start"></ion-icon>
+	<ion-label [color]="getLevelColor(logLevelCount.level)">{{ logLevelCount.level | uppercase }}</ion-label>
+	<ion-badge [color]="getLevelColor(logLevelCount.level)" slot="end">{{ logLevelCount.count }}</ion-badge>
+</ion-item>

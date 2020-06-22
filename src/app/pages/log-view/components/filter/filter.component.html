@@ -1,0 +1,58 @@
+<ion-toolbar *ngIf="isModal">
+	<ion-icon name="filter-outline" slot="start"></ion-icon>
+	<ion-title>
+		Filters
+	</ion-title>
+	<ion-buttons slot="end">
+		<ion-button (click)="closeModal()">
+			<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+		</ion-button>
+	</ion-buttons>
+</ion-toolbar>
+<ion-searchbar debounce=2000 showCancelButton="focus" [(ngModel)]="searchText" (ionChange)="createAndApplyFilter()">
+</ion-searchbar>
+<ion-item-divider>
+	Levels
+</ion-item-divider>
+<ion-list>
+	<ion-item *ngFor="let selectedLoglevel of selectedLoglevels">
+		<ion-icon [color]="getLevelColor(selectedLoglevel.level)" [name]="getLevelIcon(selectedLoglevel.level)"
+			slot="start"></ion-icon>
+		<ion-label [color]="getLevelColor(selectedLoglevel.level)">{{ selectedLoglevel.level | uppercase }}</ion-label>
+		<ion-toggle [(ngModel)]="selectedLoglevel.isSelected" [disabled]="isDisabled(selectedLoglevel)" (ionChange)="createAndApplyFilter()"></ion-toggle>
+	</ion-item>
+</ion-list>
+<ion-item-divider *ngIf="from && to">
+	Timestamps
+</ion-item-divider>
+<ion-item *ngIf="from && to">
+	<ion-item class="ion-no-padding">
+		<ion-label position="stacked">From: </ion-label>
+		<ion-datetime  [(ngModel)]="from" [displayFormat]="dateFormat" [min]="min" [max]="to"
+			(ionChange)="createAndApplyFilter()"></ion-datetime>
+	</ion-item>
+	<ion-button slot="end" (click)="from = logService.startDate">
+		<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+	</ion-button>
+</ion-item>
+<ion-item *ngIf="from && to">
+	<ion-item class="ion-no-padding">
+		<ion-label position="stacked">To: </ion-label>
+		<ion-datetime [(ngModel)]="to" [displayFormat]="dateFormat" [min]="from"
+			[max]="max" (ionChange)="createAndApplyFilter()"></ion-datetime>
+	</ion-item>
+	<ion-button slot="end" (click)="to = logService.endDate">
+		<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+	</ion-button>
+</ion-item>
+<ion-item-divider *ngIf="filterService.filter.messageFilters?.length > 0">
+	Excluded Messages
+</ion-item-divider>
+<ion-list>
+	<ion-item *ngFor="let excluded of filterService.filter.messageFilters">
+		<ion-label>{{ excluded }}</ion-label>
+		<ion-button slot="end" (click)="filterService.removeMessageFilter(excluded)">
+			<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+		</ion-button>
+	</ion-item>
+</ion-list>

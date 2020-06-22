@@ -1,0 +1,34 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-icon [color]="getLevelColor(logEntry.level)" [name]="getLevelIcon(logEntry.level)" slot="start"></ion-icon>
+		<ion-title [color]="getLevelColor(logEntry.level)">
+			<strong class="capitalize">{{ logEntry.level }}-Message</strong>
+		</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="searchForMessage()">
+				<ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+			</ion-button>
+			<ion-button (click)="removeFromList()">
+				<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+			</ion-button>
+			<ion-button (click)="close()">
+				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<h4>{{ logEntry.formattedTimestamp }}</h4>
+	<p>{{ logEntry.message }}</p>
+	<ion-item-divider>
+		<h6>Meta-Informations</h6>
+	</ion-item-divider>
+	<ion-item-divider>
+		<pre>
+		<code class="detail-text">
+{{logEntry.meta}}
+		</code>
+	</pre>
+	</ion-item-divider>
+</ion-content>

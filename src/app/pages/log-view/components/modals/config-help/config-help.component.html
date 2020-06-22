@@ -1,0 +1,63 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-icon class="title-icon" name="help-outline" slot="start"></ion-icon>
+		<ion-title>
+			Configuration Help
+		</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="close()">
+				<ion-icon slot="icon-only" name="close-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="wrapper">
+		<p>
+			This configuration defines how your log entries are interpreted. Basically the parser just parses every line in
+			your log file into an js object. Now you need to tell it where it can find the rigt properties to display what you
+			want to see.
+		</p>
+		<div>
+			<ul>
+				<li style="margin-bottom: 20px"><b>Profile:</b> You can create multiple profiles for different formats of your
+					logfiles. "+" Adds a new one.</li>
+				<li style="margin-bottom: 20px"><b>Timestamp:</b> The name of the property that is representing the timestamp.
+					It will be displayed in the list.</li>
+				<li style="margin-bottom: 20px"><b>Level:</b> The name of the property that is representing the used log level.
+					It will be displayed in the list.</li>
+				<li style="margin-bottom: 20px"><b>Message:</b> The log message of your object. Yup, also displayed in the list.
+				</li>
+			</ul>
+			<hr>
+			<h6>Optional properties</h6>
+			<ul>
+				<li style="margin-bottom: 20px"><b>Meta informations:</b> Sometimes you need more than just a message to find a
+					bug. So you log objects like errors or current states of your model etc. Here you can tell the log viewer the
+					name of that property. It will be displayed in a modal when you click oon the entry in the list. <i>If it is
+						not defined the complete log entry will be displayed.</i></li>
+				<li style="margin-bottom: 20px"><b>Context:</b> We like to log the class name where the log was written as
+					context of the specific message. If you do too, then this is your chance to tell the log viewer where. It will
+					be displayed in the list and the modal. <i>If it is not defined you will not see anything.</i></li>
+			</ul>
+			<hr>
+			<h6>Formatting</h6>
+			<ul>
+				<li style="margin-bottom: 20px"><b>Date format:</b> Since we all don´t live in the same country and we have
+					different ways to display a date, you can tell the log viewer how you like it. <b>It has nothing to do with
+						the date format inside of your log file. It is just for display purposes. As long as your file contains a
+						parsable date string, it will do. If not, you got a problem.</b></li>
+				<li style="margin-bottom: 20px"><b>Page size:</b> You can define here how many log entries you want to see on
+					one page. It has a slight impact on performance. The more there is to be rendered at once, got it?</li>
+			</ul>
+			<hr>
+			<p><b>Note: Except for the meta informations all properties are expected to be a string. If not you will get a
+					"Invalid key" replacer.</b></p>
+		</div>
+		<p>
+			For more informations visit <a href="https://github.com/AngryFrogEntertainment/log-viewer"
+				target="_blank">the github page</a>.
+		</p>
+	</div>
+</ion-content>
