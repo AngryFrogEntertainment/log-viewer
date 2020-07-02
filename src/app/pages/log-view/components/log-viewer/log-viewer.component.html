@@ -1,0 +1,29 @@
+<ion-card>
+	<ion-card-header>
+		<ion-item>
+			<ion-text slot="start">
+				Log entries
+			</ion-text>
+			<app-file-input slot="end" text="Select new file" (onSelect)="logService.openLogFile($event)"></app-file-input>
+		</ion-item>
+	</ion-card-header>
+	<ion-card-content>
+		<ion-list>
+			<ion-item button *ngFor="let entry of page; index as i;" (click)="showDetails(i)" detail>
+				<ion-icon [name]="entry.icon" [color]="entry.iconColor" slot="start"></ion-icon>
+				<ion-text class="log-title" [color]="entry.iconColor">
+					<b>{{ entry.formattedTimestamp }}</b>
+				</ion-text>
+				<ion-text class="log-title ion-hide-md-down" [color]="entry.iconColor">
+					<b>{{ entry.level | uppercase }}:</b>
+				</ion-text>
+				<ion-text class="log-title ion-hide-md-down" [color]="entry.iconColor" *ngIf="entry.context">
+					<b>{{ entry.context }}</b>
+				</ion-text>
+				<ion-text class="log-message">
+					{{ entry.message }}
+				</ion-text>
+			</ion-item>
+		</ion-list>
+	</ion-card-content>
+</ion-card>

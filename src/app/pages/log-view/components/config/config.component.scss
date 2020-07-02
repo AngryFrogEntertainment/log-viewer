@@ -1,0 +1,23 @@
+ion-item-divider {
+	--background: transparent;
+}
+
+ion-content {
+	--background: transparent;
+}
+
+.description {
+	font-size: .7rem;
+	font-style: italic;
+	color: var(--ion-color-step-500);
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+h6 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
