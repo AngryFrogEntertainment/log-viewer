@@ -1,3 +1,3 @@
 export const baseEnvironment = {
-	version: 'v0.9.5'
+	version: 'v1.0.0'
 };

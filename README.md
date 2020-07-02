@@ -3,6 +3,10 @@
 # Log viewer
 A simple, configurable and extensible log viewer. Currently only supporting JSON format out of the box, but [others](#extensibility) may come. 
 
+You can host it yourself or install it on windows. Download it from the [latest release](/releases/latest).
+
+Or you can use the google cloud hosted [log viewer app](https://angryfrog-log-viewer.ey.r.appspot.com/)
+
 ## Table of contents
 * [Motivation](#motivation)
   * [Why another log viewer?](#why-another-log-viewer?)

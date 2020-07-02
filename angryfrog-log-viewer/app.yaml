@@ -1,0 +1,38 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /
+  secure: always
+  static_files: www/index.html
+  upload: www/index.html
+
+- url: /(.*\.(js))$
+  secure: always
+  static_files: www/\1
+  upload: www/.*\.(js)$
+  mime_type: text/javascript
+
+- url: /assets/(.*\.(gif|png|jpg|svg))$
+  static_files: www/assets/\1
+  upload: www/assets/.*\.(gif|png|jpg|svg)$
+
+- url: /svg/(.*\.(gif|png|jpg|svg))$
+  static_files: www/svg/\1
+  upload: www/svg/.*\.(gif|png|jpg|svg)$
+
+- url: /(.*\.(gif|png|jpg|svg))$
+  static_files: www/\1
+  upload: www/.*\.(gif|png|jpg|svg)$
+
+- url: /(.*\.(css))$
+  secure: always
+  static_files: www/\1
+  upload: www/.*\.(css)$
+
+# Routing for anything (wild card) after
+- url: /.*
+  secure: always
+  static_files: www/index.html
+  upload: www/.*
