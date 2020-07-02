@@ -1,0 +1,88 @@
+<ion-content>
+	<ion-list lines="full" class="ion-no-padding">
+		<ion-item-divider>
+			<h6>Logger profiles</h6>
+			<ion-item>
+				<ion-buttons slot="end" class="ion-no-padding">
+					<ion-button (click)="createProfile()">
+						<ion-icon slot="icon-only" name="add-outline"></ion-icon>
+					</ion-button>
+					<ion-button [disabled]="selectedProfile === 'default' || selectedProfile === currentCreatingProfile" (click)="deleteProfile()">
+						<ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+					</ion-button>
+				</ion-buttons>
+			</ion-item>
+		</ion-item-divider>
+		<ion-item>
+			<ion-label position="stacked">Profile</ion-label>
+			<!-- The selectedText property is set because the select component does not rerender after the ngModel has changed
+				This fixes the problem of not showing any selected text although it has a value. The select options are still not
+			updated. TODO: Find fix for that. -->
+			<ion-select [selectedText]="selectedProfile" [(ngModel)]="selectedProfile" (ionChange)="selectProfile($event.detail.value)">
+				<ion-select-option *ngFor="let profile of configService.profiles" [value]="profile">{{profile}}
+				</ion-select-option>
+			</ion-select>
+		</ion-item>
+		<ion-item-divider>
+			Log entry property names
+		</ion-item-divider>
+		<div class="description">
+			Note: Divide nested properties with &#39;:&#39;. E.g.: &#39;message:text&#39;.
+		</div>
+		<ion-item>
+			<ion-label position="stacked">Timestamp<ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input type="text" required [(ngModel)]="config.timestamp"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="stacked">Level<ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input type="text" required [(ngModel)]="config.level"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="stacked">Message<ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input type="text" required [(ngModel)]="config.message"></ion-input>
+		</ion-item>
+		<ion-item-divider>
+			Optional properties
+		</ion-item-divider>
+		<ion-item>
+			<ion-label position="stacked">Meta informations</ion-label>
+			<ion-input type="text" [(ngModel)]="config.meta"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="stacked">Context</ion-label>
+			<ion-input type="text" [(ngModel)]="config.context"></ion-input>
+		</ion-item>
+		<ion-item-divider>
+			Date
+		</ion-item-divider>
+		<ion-item>
+			<ion-label position="stacked">Date format<ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input type="text" required [(ngModel)]="config.dateFormat"></ion-input>
+		</ion-item>
+		<ion-item-divider>
+			Page
+		</ion-item-divider>
+		<ion-item>
+			<ion-label position="stacked">Page size<ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input type="number" min="1" required [(ngModel)]="config.pageSize"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-buttons slot="end">
+				<ion-button expand="full" [disabled]="!isValid" (click)="save()">
+					Save
+				</ion-button>
+				<ion-button expand="full" (click)="close()">
+					Cancel
+				</ion-button>
+				<ion-button expand="full" (click)="clear()">
+					Clear
+				</ion-button>
+			</ion-buttons>
+		</ion-item>
+	</ion-list>
+</ion-content>

@@ -1,0 +1,102 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-item slot="start" lines="none">
+			<img class="ion-hide-lg-down logo dark-mode-show" src="assets/AngryFrogLogo_Title_Right_White.svg" slot="start" />
+			<img class="ion-hide-lg-down logo dark-mode-hide" src="assets/AngryFrogLogo_Title_Right.svg" slot="start" />
+			<img class="ion-hide-lg-up logo" src="assets/AngryFrogLogo.svg" slot="start" />
+			<ion-title>Log viewer</ion-title>
+		</ion-item>
+		<ion-buttons slot="end">
+			<ion-button (click)="openFilterModal()" class="ion-hide-lg-up"
+				*ngIf="logService.hasParsedFile && !logService.isParsing && !configService.isInitializing">
+				<ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+			</ion-button>
+			<ion-menu-button *ngIf="!configService.isInitializing">
+				<ion-icon name="settings-outline"></ion-icon>
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<!-- Prevent default has to be called outside the function or otherwise it won´t work -->
+	<div (drop)="$event.preventDefault();onDrop($event)" (dragover)="onDrag($event, true)"
+		(dragleave)="onDrag($event, false)" class="drop-zone" [ngClass]="{ 'highlight' : isDraggedOver }">
+		<div id="container" *ngIf="!logService.hasParsedFile && !logService.isParsing && !configService.isInitializing">
+			<strong>Open or drag file to see its contents</strong><br />
+			<app-file-input (onSelect)="logService.openLogFile($event)"></app-file-input>
+		</div>
+		<ion-grid *ngIf="logService.hasParsedFile && !logService.isParsing && !configService.isInitializing">
+			<ion-row>
+				<ion-col size="12" size-lg="4">
+					<ion-row>
+						<ion-col class="inner-col" size="12">
+							<ion-card>
+								<ion-card-header>
+									<ion-item>
+										Overview
+										<ion-text slot="end">Total Count: {{ logService.totalCount }}</ion-text>
+									</ion-item>
+								</ion-card-header>
+								<ion-card-content>
+									<app-log-count></app-log-count>
+								</ion-card-content>
+							</ion-card>
+						</ion-col>
+						<ion-col class="inner-col ion-hide-lg-down" size="12">
+							<ion-card>
+								<ion-card-header>
+									<ion-item>
+										Filters
+										<ion-text slot="end">
+											Filtered entries: {{ logService.filteredCount }}
+										</ion-text>
+									</ion-item>
+								</ion-card-header>
+								<ion-card-content>
+									<app-filter></app-filter>
+								</ion-card-content>
+							</ion-card>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+				<ion-col size="12" size-lg="8">
+					<app-log-viewer *ngIf="logService.hasParsedFile" [page]="logService.logEntryPages[page - 1]"></app-log-viewer>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+</ion-content>
+
+<ion-footer *ngIf="logService.hasParsedFile && !logService.isParsing">
+	<ion-toolbar>
+		<ion-item slot="start">
+			<ion-buttons>
+				<ion-button (click)="setPage(1)" [disabled]="page == 1 || logService.pageCount === 0">
+					<ion-icon slot="icon-only" name="play-skip-back-outline"></ion-icon>
+				</ion-button>
+				<ion-button (click)="setPage(page - 1)" [disabled]="page == 1 || logService.pageCount === 0">
+					<ion-icon slot="icon-only" name="play-back-outline"></ion-icon>
+				</ion-button>
+			</ion-buttons>
+		</ion-item>
+		<div class="pager" *ngIf="logService.pageCount !== 0">
+			<ion-input type="number" debounce="500" [max]="logService.pageCount" min="0" size="30"
+				[ngModel]="page" (ngModelChange)="setPage($event)"></ion-input>
+		</div>
+		<ion-item slot="end">
+			<ion-buttons>
+				<ion-button (click)="setPage(page + 1)" [disabled]="page == logService.pageCount  || logService.pageCount === 0">
+					<ion-icon slot="icon-only" name="play-forward-outline"></ion-icon>
+				</ion-button>
+				<ion-button (click)="setPage(logService.pageCount)" [disabled]="page == logService.pageCount || logService.pageCount === 0">
+					<ion-icon slot="icon-only" name="play-skip-forward-outline"></ion-icon>
+				</ion-button>
+			</ion-buttons>
+		</ion-item>
+		<!-- <ion-button slot="end" (click)="setPage(page + 1)" [disabled]="page == logService.pageCount">
+			<ion-icon slot="end" name="arrow-forward-outline"></ion-icon>Next
+		</ion-button> -->
+	</ion-toolbar>
+</ion-footer>
