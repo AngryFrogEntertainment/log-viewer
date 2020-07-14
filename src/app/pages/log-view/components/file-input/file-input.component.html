@@ -1,6 +1,6 @@
 <input #fileSelect class="d-none" type="file" (change)="fileSelected($event.target)"
 	(click)="fileSelect.value = null" />
-<ion-input #ionFileSelect class="d-none" type="file" (ionChange)="ionChange($event.detail.value)"></ion-input>
+<ion-input #ionFileSelect class="d-none" type="file" (ionChange)="ionChange($event)"></ion-input>
 <ion-button shape="round" (click)="open()">
 	<ion-icon slot="start" name="folder-open-outline"></ion-icon>{{ text }}
 </ion-button>

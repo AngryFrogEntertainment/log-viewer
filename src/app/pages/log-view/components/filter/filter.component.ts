@@ -41,6 +41,10 @@ export class FilterComponent implements OnInit {
 	 * Maximum date of all log entries.
 	 */
 	max = '';
+	/**
+	 * If same messages that directly follow each other should be groupped
+	 */
+	groupSameMsg = false;
 
 	// Make static functions and properties available to the view
 	getLevelIcon = LogEntry.getLevelIcon;
@@ -75,6 +79,10 @@ export class FilterComponent implements OnInit {
 			}
 
 			this.selectedLoglevels.forEach(selectedLevel => {
+				if (!filter.logLevels || filter.logLevels.length === 0) {
+					selectedLevel.isSelected = true;
+					return;
+				}
 				// Only change values that are not the same
 				if (selectedLevel.isSelected && !filter.logLevels.includes(selectedLevel.level)) {
 					selectedLevel.isSelected = false;
@@ -83,6 +91,18 @@ export class FilterComponent implements OnInit {
 					selectedLevel.isSelected = true;
 				}
 			});
+
+			if (!filter.from) {
+				this.from = this.logService.startDate;
+				this.min = this.logService.startDate;
+			}
+
+			if (!filter.to) {
+				this.to = this.logService.endDate;
+				this.max = this.logService.endDate;
+			}
+
+			this.groupSameMsg = filter.groupSameMsg;
 		});
 	}
 
@@ -101,6 +121,7 @@ export class FilterComponent implements OnInit {
 		filter.searchText = this.searchText;
 		filter.from = this.from;
 		filter.to = this.to;
+		filter.groupSameMsg = this.groupSameMsg;
 
 		this.filterService.applyFilter(filter);
 	}
@@ -120,5 +141,12 @@ export class FilterComponent implements OnInit {
 	isDisabled(selectedLogLevel: { level: string, isSelected: boolean }) {
 		const isDisabled = selectedLogLevel.isSelected && this.filterService.filter.logLevels.length === 1;
 		return isDisabled;
+	}
+
+	/**
+	 * Resets the filters back to default
+	 */
+	reset() {
+		this.filterService.reset();
 	}
 }

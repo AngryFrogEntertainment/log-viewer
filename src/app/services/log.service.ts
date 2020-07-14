@@ -19,6 +19,7 @@ export class LogService {
 	private $entriesCreated = new BehaviorSubject<LogEntry[]>([]);
 
 	private _logEntries: LogEntry[] = [];
+	private _groupedEntries: LogEntry[] = [];
 	private _filteredCount = 0;
 	private _logEntryPages: LogEntry[][] = [];
 	private _logLevelCount = new Map<string, number>();
@@ -150,8 +151,9 @@ export class LogService {
 		this._hasParsedFile = false;
 		this._parseErrorCount = 0;
 		this._logEntries = [];
+		this._groupedEntries = [];
 		this._logEntryPages = [];
-		this.filterService.applyFilter(new Filter()); // Reset filters in case we had a previously filtered file
+		this.filterService.reset(); // Reset filters in case we had a previously filtered file
 
 		let loading;
 		try {
@@ -266,12 +268,14 @@ export class LogService {
 
 	private getFilteredEntries(filter: Filter) {
 		console.log('Applying filters to entry list.', filter);
+		const entries = filter && filter.groupSameMsg ? this._groupedEntries : this._logEntries;
+
 		if (!this.filterService.isFiltered(filter, this.startDate, this.endDate)) {
 			console.log('No active filters. Returning whole list.', filter);
-			return this._logEntries;
+			return entries;
 		}
 
-		return this._logEntries.filter(entry => {
+		return entries.filter(entry => {
 			try {
 				// Log level not included
 				if (filter.logLevels
@@ -342,6 +346,12 @@ export class LogService {
 				logEntry => {
 					this.countEntryLevel(logEntry);
 					this._logEntries.push(logEntry);
+					const lastEntry = this._groupedEntries.length > 0 ? this._groupedEntries[this._groupedEntries.length - 1] : null;
+					if (lastEntry && lastEntry.level === logEntry.level && lastEntry.message === logEntry.message && lastEntry.meta === logEntry.meta) {
+						lastEntry.count = lastEntry.count + 1;
+					} else {
+						this._groupedEntries.push(logEntry);
+					}
 				},
 				async error => {
 					reject(error);
