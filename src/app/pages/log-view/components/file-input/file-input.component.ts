@@ -1,3 +1,4 @@
+import { Platform } from '@ionic/angular';
 import { ConfigService } from 'src/app/services/config.service';
 import { Component, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
 
@@ -16,18 +17,14 @@ export class FileInputComponent {
 	@Output() onSelect = new EventEmitter<File | string>();
 	@Input() text = 'Select file';
 
-	constructor(private configService: ConfigService) { }
+	constructor(private platform: Platform) { }
 
 	/**
 	 * Opening a file dialog depending on environment.
 	 */
 	open() {
-		if (this.configService.isDesktop) {
-			this.fileInput.nativeElement.click();
-		} else {
-			// We need to hack here a little bit since ionic does not expose the element or any click function
-			this.ionFileSelect.el.childNodes[0].click();
-		}
+		// We need to hack here a little bit since ionic does not expose the element or any click function
+		this.ionFileSelect.el.childNodes[0].click();
 	}
 
 	/**
@@ -35,9 +32,13 @@ export class FileInputComponent {
 	 *
 	 * @param filePath The selected file path.
 	 */
-	ionChange(filePath) {
-		console.log(filePath);
-		this.onSelect.emit(filePath);
+	ionChange(ev: any) {
+		console.log(ev);
+		if (this.platform.is('desktop') || this.platform.is('mobileweb')) {
+			this.fileSelected(ev.target.childNodes[0]);
+		} else {
+			this.onSelect.emit(ev.detail.value);
+		}
 	}
 
 	/**
