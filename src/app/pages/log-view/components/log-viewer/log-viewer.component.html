@@ -10,6 +10,7 @@
 	<ion-card-content>
 		<ion-list>
 			<ion-item button *ngFor="let entry of page; index as i;" (click)="showDetails(i)" detail>
+				<ion-badge *ngIf="isGrouped" [color]="entry.iconColor" slot="start">{{ entry.count }}</ion-badge>
 				<ion-icon [name]="entry.icon" [color]="entry.iconColor" slot="start"></ion-icon>
 				<ion-text class="log-title" [color]="entry.iconColor">
 					<b>{{ entry.formattedTimestamp }}</b>

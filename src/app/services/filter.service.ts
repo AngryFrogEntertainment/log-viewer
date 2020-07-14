@@ -40,6 +40,7 @@ export class FilterService {
 		newFilter.from = filter.from ? filter.from : this.filter.from;
 		newFilter.to = filter.to ? filter.to : this.filter.to;
 		newFilter.messageFilters = filter.messageFilters && filter.messageFilters.length > 0 ? filter.messageFilters : this.filter.messageFilters;
+		newFilter.groupSameMsg = filter.groupSameMsg;
 
 		// We only need to apply it if it has really changed otherwise we calculate the pages again for nothing.
 		if (this.hasFilterChanged(newFilter)) {
@@ -149,7 +150,8 @@ export class FilterService {
 		// Simple properties check
 		if (newFilter.from !== this.filter.from
 			|| newFilter.to !== this.filter.to
-			|| newFilter.searchText !== this.filter.searchText) {
+			|| newFilter.searchText !== this.filter.searchText
+			|| newFilter.groupSameMsg !== this.filter.groupSameMsg) {
 			return true;
 		}
 
@@ -160,6 +162,13 @@ export class FilterService {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Resets the current applied filters back to default.
+	 */
+	reset() {
+		this.$filter.next(new Filter());
 	}
 
 	private hasArrayChanged(left: string[], right: string[]) {

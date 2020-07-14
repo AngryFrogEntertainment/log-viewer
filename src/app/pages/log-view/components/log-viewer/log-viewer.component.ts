@@ -13,8 +13,13 @@ import { ModalController } from '@ionic/angular';
 export class LogViewerComponent {
 
 	@Input() page: LogEntry[] = [];
+	isGrouped = false;
 
-	constructor(private modalController: ModalController, public filterService: FilterService, public logService: LogService) { }
+	constructor(private modalController: ModalController, public filterService: FilterService, public logService: LogService) {
+		filterService.filterAsObservable.subscribe(filter => {
+			this.isGrouped = filter.groupSameMsg;
+		});
+	}
 
 	/**
 	 *

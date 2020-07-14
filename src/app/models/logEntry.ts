@@ -5,6 +5,7 @@ import * as moment from 'moment';
  * Model to represent a log entry.
  */
 export class LogEntry {
+	private _count = 1;
 
 	/**
 	 * Returns the configured timespan property as ISO string.
@@ -95,6 +96,20 @@ export class LogEntry {
 	 */
 	get iconColor() {
 		return LogEntry.getLevelColor(this.level);
+	}
+
+	/**
+	 * Returns the group count if grouped
+	 */
+	get count() {
+		return this._count;
+	}
+
+	/**
+	 * Sets the group count for grouping
+	 */
+	set count(value: number) {
+		this._count = value;
 	}
 
 	constructor(private _data: any) { }
