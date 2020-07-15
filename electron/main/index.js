@@ -72,7 +72,6 @@ async function createWindow() {
 		splashScreen.init();
 	} else {
 		mainWindow.loadURL(`file://${path.join(__dirname, '..')}/app/index.html`);
-		// mainWindow.loadURL('http://localhost:8100');
 		mainWindow.webContents.on('dom-ready', () => {
 			mainWindow.show();
 		});
