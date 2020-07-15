@@ -285,9 +285,7 @@ export class LogService {
 				}
 
 				// Searchtext not included
-				if (filter.searchText
-					&& !entry.message.toLowerCase().includes(filter.searchText.toLowerCase())
-					&& (!entry.context || !entry.context.toLowerCase().includes(filter.searchText.toLowerCase()))) {
+				if (!this.containsSearchText(filter.searchText, entry)) {
 					return false;
 				}
 
@@ -412,5 +410,22 @@ export class LogService {
 		}
 
 		return parser;
+	}
+
+	private containsSearchText(searchText: string, entry: LogEntry) {
+		if (!searchText) {
+			// If no searchtext is given, all entries are included
+			return true;
+		}
+
+		const searchTexts = searchText.split('||');
+		for (const text of searchTexts) {
+			if (entry.message.toLowerCase().includes(text.trim().toLowerCase())
+				|| (entry.context && entry.context.toLowerCase().includes(text.trim().toLowerCase()))) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

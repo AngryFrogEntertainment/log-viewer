@@ -130,7 +130,7 @@ You can filter the list of log entries by various combinable categories.
   <h4>Filters</h4>
   <p>The filters card gives you the opportunity to filter the log list. The total amount of entries that fit the filters are displayed in the upper right corner.</p>
   <ul>
-    <li style="margin-bottom: 20px"><b>Search:</b> You can search the log messages and, if existent, the context.</li>
+    <li style="margin-bottom: 20px"><b>Search:</b> You can search the log messages and, if existent, the context. You can combine multiple searches by separating the text with '||'. E.g.: 'message 1 || context 2'. <b>An 'AND' combination is not supported yet.<b></li>
     <li style="margin-bottom: 20px"><b>Group same messages:</b> If activate every log entry with the same message, level and <b>meta informations</b> is grouped into one entry if they follow each other directly. The count will be displayed and the timestamp will be the one of the first entry. It is helpful in case you have the same error or info in a small amount of time with nothing else happening in between. <i>I needed that feature to get a better overview over a recent bug that apperead a few hundred times over a few seconds.</i></li>
     <li style="margin-bottom: 20px"><b>Levels:</b> You can deactivate or activate the various log levels. The list is generated dynamically like in the overview.</li>
     <li style="margin-bottom: 20px"><b>Timestamps:</b> You can define the timespan of log entries you are interested in.</li>
