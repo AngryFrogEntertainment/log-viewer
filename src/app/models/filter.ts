@@ -25,5 +25,5 @@ export class Filter {
 	/**
 	 * If similiar messages that directly follow each other should be groupped
 	 */
-	groupSameMsg = false;
+	groupSameMsg: boolean;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@angry-frog/log-viewer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "AngryFrogEntertainment - Benjamin Schmidtke",
   "productName": "AngryFrog Log Viewer",
   "description": "Log viewer for json log files like created by winston logger.",
@@ -15,6 +15,7 @@
     "@capacitor/electron": "^2.2.0",
     "electron-compile": "^6.4.4",
     "electron-is-dev": "^1.1.0",
+    "electron-localshortcut": "^3.2.1",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
@@ -59,7 +60,7 @@
         "asar": true
       },
       "electronWinstallerConfig": {
-        "title":"AngryFrog log viewer",
+        "title": "AngryFrog log viewer",
         "name": "AngryFrog.LogViewer",
         "icon": "C:/Projekte/AngryFrog/json-log-viewer/electron/assets/AngryFrogLogo.ico",
         "setupIcon": "C:/Projekte/AngryFrog/json-log-viewer/electron/assets/AngryFrogLogo.ico"

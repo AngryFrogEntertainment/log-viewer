@@ -1,9 +1,10 @@
+import { FileService } from './file.service';
 import { NotificationService } from './notification.service';
-import { StorageService } from './storage.service';
 import { AppConfig } from './../models/appConfig';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { IStorageService } from './storage/istorage.service';
 
 /**
  * Service that holds the different profiles of logger configurations which define the
@@ -57,9 +58,10 @@ export class ConfigService {
 	}
 
 	constructor(
-		private storageService: StorageService,
+		private storageService: IStorageService,
 		private notificationService: NotificationService,
-		private platform: Platform) { }
+		private platform: Platform,
+		private fileService: FileService) { }
 
 	/**
 	 * Initializes the service. It creates the default configuration on first start otherwise
@@ -151,7 +153,7 @@ export class ConfigService {
 			config = new AppConfig();
 		}
 
-		this.setConfig(config, profile);
+		await this.setConfig(config, profile);
 		return config;
 	}
 
@@ -216,8 +218,77 @@ export class ConfigService {
 		}
 	}
 
-	private setConfig(config: AppConfig, profile: string) {
+	/**
+	 * Imports the configurations from the given `file`.
+	 *
+	 * @param file The file that contains the profiles as json.
+	 */
+	async importConfigs(file: File | string) {
+		try {
+			const content = await this.fileService.readAsText(file);
+			const profiles = JSON.parse(content);
+
+			for (const profile in profiles) {
+				if (profiles.hasOwnProperty(profile)) {
+					const config = profiles[profile] as AppConfig;
+
+					if (config.level && config.message && config.timestamp) {
+						// Set defaults if missing
+						config.dateFormat = config.dateFormat ? config.dateFormat : 'YYYY-MM-DD HH:mm:ss';
+						config.pageSize = config.pageSize && config.pageSize > 0 ? config.pageSize : 100;
+						await this.saveConfig(config, profile);
+					} else {
+						// If the must haves are missing show error message
+						console.error(`Configuration for profile '${profile}' is corrupt`, config);
+						await this.notificationService.showAlert({
+							header: 'Error',
+							message: `Configuration for profile '${profile}' is corrupt. Details in console.`
+						});
+					}
+				}
+			}
+
+			await this.notificationService.showAlert({
+				header: 'Import finished',
+				message: `Profiles imported.`,
+				buttons: [
+					'OK'
+				]
+			});
+		} catch (error) {
+			console.error('An unexpected error occured checking profiles existing in storage.', error);
+			await this.notificationService.showAlert({
+				header: 'Error',
+				message: 'Could not check profile in storage. Details in console.'
+			});
+		}
+	}
+
+	/**
+	 * Returns the saved configuration profiles as json string.
+	 */
+	async exportConfigs() {
+		try {
+			const exportContent = {};
+			for (const profile of this.profiles) {
+				const config = await this.storageService.getData<AppConfig>(profile);
+				exportContent[profile] = config;
+			}
+
+			return JSON.stringify(exportContent);
+		} catch (error) {
+			console.error('An unexpected error occured exporting configs.', error);
+			await this.notificationService.showAlert({
+				header: 'Error',
+				message: 'Could not export configs. Details in console.'
+			});
+		}
+
+	}
+
+	private async setConfig(config: AppConfig, profile: string) {
 		this._currentProfile = profile;
+		await this.storageService.storeData('last-profile', profile);
 		ConfigService.appConfig = config;
 		this.$config.next(config);
 	}

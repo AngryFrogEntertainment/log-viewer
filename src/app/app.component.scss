@@ -1,12 +1,12 @@
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+	--background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
 
 ion-menu.md ion-content {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --padding-top: 20px;
-  --padding-bottom: 20px;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
 }
 
 ion-menu.md ion-list {

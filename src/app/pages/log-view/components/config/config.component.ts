@@ -1,7 +1,7 @@
 import { AppConfig } from './../../../../models/appConfig';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfigService } from 'src/app/services/config.service';
-import { MenuController, AlertController } from '@ionic/angular';
+import { MenuController, AlertController, Platform } from '@ionic/angular';
 
 /**
  * Component for the log viewer configuration.
@@ -12,6 +12,8 @@ import { MenuController, AlertController } from '@ionic/angular';
 	styleUrls: ['./config.component.scss'],
 })
 export class ConfigComponent implements OnInit {
+	@ViewChild('importInput') importInput: any;
+	@ViewChild('exportAnchor') exportAnchor: any;
 
 	/**
 	 * The currently selected configuration.
@@ -37,7 +39,11 @@ export class ConfigComponent implements OnInit {
 		return this.config.timestamp && this.config.level && this.config.message && this.config.dateFormat && this.config.pageSize;
 	}
 
-	constructor(public configService: ConfigService, private menu: MenuController, public alertController: AlertController) { }
+	constructor(
+		public configService: ConfigService,
+		private menu: MenuController,
+		public alertController: AlertController,
+		private platform: Platform) { }
 
 	ngOnInit() {
 		this.configService.init().then(config => {
@@ -160,10 +166,49 @@ export class ConfigComponent implements OnInit {
 		this.configService.deleteItem(this.selectedProfile);
 	}
 
+	/**
+	 * Clickhandler for import
+	 */
+	async import() {
+		this.importInput.el.childNodes[0].click();
+	}
+
+	/**
+	 * Imports profiles from the given file as path or file api file.
+	 */
+	async importProfiles(ev: any) {
+		if (this.platform.is('desktop') || this.platform.is('mobileweb')) {
+			this.fileSelected(ev.target.childNodes[0]);
+		} else {
+			await this.configService.importConfigs(ev.detail.value);
+		}
+	}
+
+	/**
+	 * Exports all profiles as json.
+	 */
+	async export() {
+		const profiles = await this.configService.exportConfigs();
+		const profileExportContent = `data:application/json;charset=utf-8,${encodeURIComponent(profiles)}`;
+		this.exportAnchor.nativeElement.href = profileExportContent;
+		this.exportAnchor.nativeElement.click();
+	}
+
 	private initConfig(config: AppConfig) {
 		this.config = AppConfig.clone(config);
 		this.profiles = [];
 		this.configService.profiles.forEach(profile => this.profiles.push(profile));
 		this.selectedProfile = this.configService.currentProfile;
+	}
+
+	private fileSelected(inputElement: any) {
+		if (inputElement.files != null && inputElement.files.length > 0) {
+			const file: File = inputElement.files[0];
+			if (file) {
+				// Open file on service
+				console.log(`Selected file ${file.name}`, file);
+				this.configService.importConfigs(file);
+			}
+		}
 	}
 }
