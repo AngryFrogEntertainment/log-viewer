@@ -1,6 +1,6 @@
 {
   "name": "@angry-frog/log-viewer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "AngryFrogEntertainment - Benjamin Schmidtke",
   "productName": "AngryFrog Log Viewer",
   "description": "Log viewer for json log files like created by winston logger.",
