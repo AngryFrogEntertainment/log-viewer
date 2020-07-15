@@ -40,7 +40,7 @@ export class FilterService {
 		newFilter.from = filter.from ? filter.from : this.filter.from;
 		newFilter.to = filter.to ? filter.to : this.filter.to;
 		newFilter.messageFilters = filter.messageFilters && filter.messageFilters.length > 0 ? filter.messageFilters : this.filter.messageFilters;
-		newFilter.groupSameMsg = filter.groupSameMsg;
+		newFilter.groupSameMsg = filter.groupSameMsg !== undefined ? filter.groupSameMsg : this.filter.groupSameMsg;
 
 		// We only need to apply it if it has really changed otherwise we calculate the pages again for nothing.
 		if (this.hasFilterChanged(newFilter)) {

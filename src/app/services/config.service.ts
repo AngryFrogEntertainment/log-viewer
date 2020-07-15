@@ -1,9 +1,9 @@
 import { NotificationService } from './notification.service';
-import { StorageService } from './storage.service';
 import { AppConfig } from './../models/appConfig';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { IStorageService } from './storage/istorage.service';
 
 /**
  * Service that holds the different profiles of logger configurations which define the
@@ -57,7 +57,7 @@ export class ConfigService {
 	}
 
 	constructor(
-		private storageService: StorageService,
+		private storageService: IStorageService,
 		private notificationService: NotificationService,
 		private platform: Platform) { }
 
