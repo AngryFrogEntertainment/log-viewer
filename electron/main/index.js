@@ -2,8 +2,9 @@ const { app, BrowserWindow, Menu, dialog } = require('electron');
 const isDevMode = require('electron-is-dev');
 const { CapacitorSplashScreen, configCapacitor } = require('@capacitor/electron');
 const path = require('path');
+const electronLocalshortcut = require('electron-localshortcut');
 
-if(require('electron-squirrel-startup')) app.quit();
+if (require('electron-squirrel-startup')) app.quit();
 
 // Place holders for our windows so they don't get garbage collected.
 let mainWindow = null;
@@ -12,7 +13,7 @@ let mainWindow = null;
 let splashScreen = null;
 
 //Change this if you do not wish to have a splash screen
-let useSplashScreen = true;
+let useSplashScreen = false;
 
 // Create simple menu for easy devtools access, and for demo
 const menuTemplateDev = [
@@ -49,7 +50,6 @@ async function createWindow() {
 		console.log('Fail load');
 	});
 
-	const userData = app.getPath('userData');
 	configCapacitor(mainWindow);
 
 	if (isDevMode) {
@@ -63,11 +63,16 @@ async function createWindow() {
 		mainWindow.removeMenu();
 	}
 
+	electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+D', () => {
+		browserWindow.webContents.openDevTools();
+	});
+
 	if (useSplashScreen) {
 		splashScreen = new CapacitorSplashScreen(mainWindow, { imageFileName: '../splash_assets/AngryFrogLogo.png' });
 		splashScreen.init();
 	} else {
 		mainWindow.loadURL(`file://${path.join(__dirname, '..')}/app/index.html`);
+		// mainWindow.loadURL('http://localhost:8100');
 		mainWindow.webContents.on('dom-ready', () => {
 			mainWindow.show();
 		});

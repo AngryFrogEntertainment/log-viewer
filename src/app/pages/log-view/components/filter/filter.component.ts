@@ -102,7 +102,7 @@ export class FilterComponent implements OnInit {
 				this.max = this.logService.endDate;
 			}
 
-			this.groupSameMsg = filter.groupSameMsg;
+			this.groupSameMsg = !!filter.groupSameMsg;
 		});
 	}
 
