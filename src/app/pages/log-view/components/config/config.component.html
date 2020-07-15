@@ -1,9 +1,17 @@
 <ion-content>
+	<ion-input #importInput class="d-none" type="file" accept="*.json" (click)="importInput.value = null" (ionChange)="importProfiles($event)"></ion-input>
+	<a #exportAnchor download class="d-none"></a>
 	<ion-list lines="full" class="ion-no-padding">
 		<ion-item-divider>
-			<h6>Logger profiles</h6>
+			Profiles
 			<ion-item>
 				<ion-buttons slot="end" class="ion-no-padding">
+					<ion-button (click)="import()">
+						<ion-icon slot="icon-only" name="enter-outline"></ion-icon>
+					</ion-button>
+					<ion-button (click)="export()">
+						<ion-icon slot="icon-only" name="exit-outline"></ion-icon>
+					</ion-button>
 					<ion-button (click)="createProfile()">
 						<ion-icon slot="icon-only" name="add-outline"></ion-icon>
 					</ion-button>

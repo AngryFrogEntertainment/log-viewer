@@ -43,6 +43,6 @@ export class FileService {
 			path: file,
 			encoding: FilesystemEncoding.UTF8
 		});
-		return content.data;
+		return content.data as string;
 	}
 }
