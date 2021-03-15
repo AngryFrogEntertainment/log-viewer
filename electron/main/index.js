@@ -64,7 +64,7 @@ async function createWindow() {
 	}
 
 	electronLocalshortcut.register(mainWindow, 'CmdOrCtrl+D', () => {
-		browserWindow.webContents.openDevTools();
+		mainWindow.webContents.openDevTools();
 	});
 
 	if (useSplashScreen) {
